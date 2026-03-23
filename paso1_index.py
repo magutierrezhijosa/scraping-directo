@@ -26,4 +26,28 @@ categorias =  []
 for h2 in soup.find_all("h2"):
     # Recogemos el enlace a la pagina en detalle 
     enlace = h2.find("a")
+
+    # Si exisate enlacxe y si contiene la URL que queremos entra
+    if enlace and "/publicitações" in enlace.get("href",""):
+
+        # Guardamos en la variable nombre el texto del titulo
+        nombre = enlace.get_text(strip=True)
+
+        # Guardamos el "href" del enlace en una variable
+        url = enlace["href"]
+
+        # Si la URL no empieza por http , le agregamos el dominio base
+        if not url.startswith("http"):
+
+            url = BASE_URL + url
+
+        # Agregamos los valores a nuestra lista para mostrala
+        categorias.append({"nombre": nombre, "url": url})
+
+# Mostramos los resultados que hemos encontrado
+print(f"\nCategorias encotradas: {len(categorias)}")
+# Creamos un bucle para recorrer los datos y mostrarlos
+for cat in categorias:
     
+    print(f"  - {cat['nombre']}")
+    print(f"  - {cat['url']}")
