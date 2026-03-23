@@ -4,11 +4,16 @@ import requests
 from bs4 import BeautifulSoup
 
 # Importamos las CONSTANTES
-from config import URL_TO_SCRAP,BASE_URL
+from config import URL_TO_SCRAP,BASE_URL,HEADERS
+
+# Simulamos ser u avegador real co cabeceras HTTP
+header = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+}
 
 # Paso 1 : Descargar la pagina
 # request.get() hace una peticion HTTP GET - como cuando tu navegador carga la pagina
-respuesta = requests.get(URL_TO_SCRAP)
+respuesta = requests.get(URL_TO_SCRAP,headers=HEADERS)
 
 # Verificamos que fue bien (codigo 200 = OK)
 print(f"Codigo de respuesta:{respuesta.status_code}")
