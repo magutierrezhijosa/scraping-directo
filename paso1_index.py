@@ -14,3 +14,16 @@ respuesta = requests.get(URL_TO_SCRAP)
 print(f"Codigo de respuesta:{respuesta.status_code}")
 
 # Paso 2: Parsear el HTML con BeautifulSoup
+# "html.parser" es el motor incluido en Python - no ne cesita instalar nada
+soup = BeautifulSoup(respuesta.text, "html.parser")
+
+# Paso 3 : Buscar todas las categorias 
+# Mirando el HTML , cada categoria esta en un <h2> dentro del area de  contenido
+# y tiene un enlace <a> con la URL de la categoria 
+categorias =  []
+
+# Buscamos todos los <h2>  que contienen un <a>
+for h2 in soup.find_all("h2"):
+    # Recogemos el enlace a la pagina en detalle 
+    enlace = h2.find("a")
+    
