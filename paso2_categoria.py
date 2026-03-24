@@ -56,3 +56,7 @@ for h4 in soup.find_all("h4"):
         if a and a.get("href", "").endswith(".pdf"):
             pdf_link = a["href"]
             
+            if not pdf_link.startwith("http"):
+                pdf_link = BASE_URL + pdf_link
+
+            break
