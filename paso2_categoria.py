@@ -14,7 +14,7 @@ respuesta = requests.get(URL_CATEGORIA, headers=HEADERS)
 print(f"Codigo de respuesta: {respuesta.status_code}")
 
 # Paso para transformar el HTML en ua estructura de arbol avegable
-soup = BeautifulSoup(respuesta, "html.parser") 
+soup = BeautifulSoup(respuesta.text, "html.parser") 
 
 # Declaramos la variable para guardar las publicaciones
 publicaciones = []
@@ -50,13 +50,20 @@ for h4 in soup.find_all("h4"):
 
             a = hermano_a_pdf.find("a")
 
-        # Si se encontro un <a> comprueba que su atributo
-        # 1. Existe , devulve "" si no existe
+        # Si se encontro un <a> comprueba que su atributo:
+        # 1. Existe guardamos en variable , si no existe devulve "" 
         # 2. Termina en .pdf 
         if a and a.get("href", "").endswith(".pdf"):
             pdf_link = a["href"]
             
-            if not pdf_link.startwith("http"):
+            if not pdf_link.startswith("http"):
                 pdf_link = BASE_URL + pdf_link
 
             break
+
+    # La fecha esta justo DESPUES del <h4> como texto suelto
+    fecha = None
+
+    # Vamos a buscar la etiqueta de la fecha dentro del h4 que recogemos del BeutifulSoup
+    div_fecha = h4.find_next("div", class_="data_editorial")
+    fecha = div_fecha.get_text(strip=True) if div_fecha else None
